@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Contador Balanças</title>
+    <script
+      src="https://kit.fontawesome.com/9302f1fcc6.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="icon"
+      type="image/svg"
+      href="css/images/icons/favicon/truck-moving-solid.svg"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,700;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header id="main-header">
+      <div id="brand">
+        Intervenções nas Balanças
+      </div>
+      <div id="menu">
+        <button
+          class="btn"
+          id="button-entrada"
+          onclick="getLastIntervention('1')"
+        >
+          <i class="fas fa-truck-moving"></i>
+          Entrada
+        </button>
+        <button
+          class="btn"
+          id="button-saida"
+          onclick="getLastIntervention('2')"
+        >
+          <i class="fas fa-truck-moving fa-flip-horizontal"></i>
+          Saida
+        </button>
+      </div>
+    </header>
+
+    <div class="main-div">
+      <div class="container">
+        <div id="title-balanca">
+          BALANÇA DE ENTRADA
+        </div>
+        <div id="container-semIntervencao">
+          <header id="hdr-ctn-semIntervencao">
+            Estamos há
+          </header>
+          <div id="tempo">
+            <div id="dias">00</div>
+            <div class="doisPontos">-</div>
+            <div id="horas">00</div>
+            <div class="doisPontos">:</div>
+            <div id="minutos">00</div>
+            <div class="doisPontos">:</div>
+            <div id="segundos">00</div>
+          </div>
+          <div id="legenda">
+            <div class="legenda">Dias</div>
+            <div class="vazio"></div>
+            <div class="legenda">Horas</div>
+            <div class="vazio"></div>
+            <div class="legenda">Minutos</div>
+            <div class="vazio"></div>
+            <div class="legenda">Segundos</div>
+          </div>
+          <footer id="ftr-ctn-semIntervencao">
+            sem intervenções.
+          </footer>
+        </div>
+        <div id="recorde">
+          Nosso recorde é: 30D - 9h:17m:22s
+        </div>
+        <div id="buttons">
+          <button id="btn-intervencao">
+            <i class="fas fa-tools"></i>
+            Intervenção
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <span class="close" id="closeModal">&times;</span>
+          <h2>
+            <i class="fas fa-tools"></i>
+            INSERIR INTERVENÇÃO
+          </h2>
+        </div>
+        <div class="modal-body">
+          <label>Usuário</label>
+          <input type="text" />
+          <label>Senha</label>
+          <input type="password" />
+          <label>Observação</label>
+          <textarea></textarea>
+        </div>
+        <div class="modal-footer">
+          <button id="cancelIntervention">Cancelar</button>
+          <button id="saveIntervention">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="loading-modal"></div>
+  </body>
+  <script src="js/scripts.js"></script>
+</html>
