@@ -3,12 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Contador Balanças</title>
-    <script
-      src="https://kit.fontawesome.com/9302f1fcc6.js"
-      crossorigin="anonymous"
-    ></script>
+    
     <link
       rel="icon"
       type="image/svg"
@@ -19,6 +15,14 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/9302f1fcc6.js"
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    
   </head>
   <body>
     <header id="main-header">
@@ -28,16 +32,14 @@
       <div id="menu">
         <button
           class="btn"
-          id="button-entrada"
-          onclick="getLastIntervention('1')"
+          id="btnScaleIn"
         >
           <i class="fas fa-truck-moving"></i>
           Entrada
         </button>
         <button
           class="btn"
-          id="button-saida"
-          onclick="getLastIntervention('2')"
+          id="btnScaleOut"
         >
           <i class="fas fa-truck-moving fa-flip-horizontal"></i>
           Saida
@@ -77,10 +79,10 @@
           </footer>
         </div>
         <div id="recorde">
-          Nosso recorde é: 30D - 9h:17m:22s
+          Nosso recorde é: 00D - 00h:00m:00s
         </div>
         <div id="buttons">
-          <button id="btn-intervencao">
+          <button id="btnIntervention">
             <i class="fas fa-tools"></i>
             Intervenção
           </button>
@@ -88,49 +90,49 @@
       </div>
     </div>
 
-    <div id="myModal" class="modal">
+    <div id="modalInsertIntervention" class="modal">
       <!-- Modal content -->
-      <div class="modal-content">
-        <div class="modal-close">
-          <span class="close" id="closeModal">&times;</span>
+      <div class="modalContent">
+        <div class="modalClose">
+          <span class="close" id="xCloseModal">&times;</span>
         </div>
-        <div class="modal-header">
+        <div class="modalHeader">
           <h2>
             <i class="fas fa-tools"></i>
             INSERIR INTERVENÇÃO
           </h2>
         </div>
-        <div class="modal-body">
-          <form action="">
+        <div class="modalBody">
+          <form id="formInserIntervention" action="">
             <div class="input">
-              <input type="text" required />
+              <input type="text" id="inputLogin" required />
               <label>Usuário</label>
               <span class="error"></span>
             </div>
 
             <div class="input">
-              <input type="password" required />
+              <input type="password" id="inputPassword" required />
               <label>Senha</label>
               <span class="error"></span>
             </div>
 
             <div class="input">
-              <textarea maxlength="230" required></textarea>
+              <textarea maxlength="230" id="txtAreaObservation" required></textarea>
               <label>Observação</label>
               <span class="error"></span>
             </div>
 
-            <button type="submit" id="saveIntervention" class="">
-              <i class="fas fa-spinner fa-pulse"></i>
+            <button type="submit" id="btnSaveIntervention" class="">
+              <i class="fas fa-spinner fa-pulse" ></i>
               Salvar
             </button>
-            <button type="button" id="cancelIntervention">Cancelar</button>
+            <button type="button" id="btnCancelIntervention">Cancelar</button>
           </form>
         </div>
       </div>
     </div>
 
-    <div class="loading-modal">
+    <div class="loadingModal">
       <i class="fas fa-spinner fa-pulse fa-3x"></i>
     </div>
   </body>

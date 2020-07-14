@@ -162,7 +162,7 @@ header#main-header {
 }
 
 /* Loading */
-.loading-modal {
+.loadingModal {
   display: none;
   position: fixed;
   z-index: 1000;
@@ -183,7 +183,7 @@ body.loading {
 }
 
 /* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
-body.loading .loading-modal {
+body.loading .loadingModal {
   display: flex;
   flex-direction: column;
 }
@@ -208,7 +208,7 @@ body.loading .loading-modal {
 }
 
 /* Modal Content */
-.modal-content {
+.modalContent {
   position: relative;
   background-color: #fefefe;
   margin: auto;
@@ -249,7 +249,7 @@ body.loading .loading-modal {
 
 /* The Close Button */
 
-.modal-close {
+.modalClose {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -271,23 +271,23 @@ body.loading .loading-modal {
 
 /* 32px 20px 0px 20px */
 
-.modal-header {
+.modalHeader {
   display: flex;
   flex-direction: column;
   align-items: center;
   /* padding: 0px 20px; */
-  background-color: #fafafa;
+  background-color: transparent;
   color: #333;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
 
-.modal-body {
+.modalBody {
   padding: 2px 16px;
   border-radius: 20px;
 }
 
-.modal-body form {
+.modalBody form {
   /* margin: 32px auto; */
   padding: 32px 64px;
 
@@ -300,9 +300,8 @@ div.input {
   position: relative;
 }
 
-.modal-body form input,
-.modal-footer form button,
-.modal-body form textarea {
+.modalBody form input,
+.modalBody form textarea {
   /* reset appeareance */
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -320,14 +319,14 @@ div.input {
   outline: none;
 }
 
-.modal-body form textarea {
+.modalBody form textarea {
   resize: none;
   height: 100px;
   overflow: hidden;
 }
 
-.modal-body form input ~ label,
-.modal-body form textarea ~ label {
+.modalBody form input ~ label,
+.modalBody form textarea ~ label {
   position: absolute;
   top: 16px;
   left: 0;
@@ -337,10 +336,10 @@ div.input {
   transition: 0.4s;
 }
 
-.modal-body form input:focus ~ label,
-.modal-body form textarea:focus ~ label,
-.modal-body form input:valid ~ label,
-.modal-body form textarea:valid ~ label {
+.modalBody form input:focus ~ label,
+.modalBody form textarea:focus ~ label,
+.modalBody form input:valid ~ label,
+.modalBody form textarea:valid ~ label {
   transform: translateY(-24px);
   font-size: 0.8em;
   letter-spacing: 0.1em;
@@ -359,7 +358,7 @@ div.input {
   padding: 0.4em;
 }
 
-.modal-body form button {
+.modalBody form button {
   width: 100%;
   border: 2px solid #274657;
   border-radius: 3px;
@@ -372,37 +371,46 @@ div.input {
   text-align: center;
 }
 
-.modal-body form #cancelIntervention {
+.modalBody form #btnCancelIntervention {
   border: 2px solid #751a20;
   color: #751a20;
 }
 
-.modal-body form #cancelIntervention:hover {
+.modalBody form #btnCancelIntervention:hover {
   background: #751a20;
   color: #fff;
 }
 
-.modal-body form #saveIntervention {
+.modalBody form #btnSaveIntervention {
   border: 2px solid #73a34f;
   color: #73a34f;
 }
 
-.modal-body form #saveIntervention:hover {
+.modalBody form #btnSaveIntervention i{
+  display: none;
+}
+
+.modalBody form #btnSaveIntervention:hover {
   background: #73a34f;
   color: #fff;
 }
 
-.modal-body form #saveIntervention.saveInterventionLoading {
+.modalBody form #btnSaveIntervention.saveInterventionLoading {
   background: #73a34f;
+  
   color: #fff;
 }
 
-.modal-body form #saveIntervention:hover {
-  background: #73a34f;
-  color: #fff;
+.modalBody form #btnSaveIntervention.saveInterventionLoading i {
+  display: inline-block;
 }
 
-.modal-body form button ~ button {
+/* .modalBody form #saveIntervention:hover {
+  background: #73a34f;
+  color: #fff;
+} */
+
+.modalBody form button ~ button {
   margin-top: 5px;
 }
 

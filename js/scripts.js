@@ -1,3 +1,7 @@
+//#region Definition
+let inLoading = false;
+let scaleInWindow = 1
+
 let segundos;
 let minutos;
 let horas;
@@ -8,9 +12,29 @@ let horasElement = document.getElementById("horas");
 let minutosElement = document.getElementById("minutos");
 let segundosElement = document.getElementById("segundos");
 let recordeElement = document.getElementById("recorde");
-let body = document.querySelector("body");
-console.log(body);
 
+let body = document.querySelector("body");
+
+let modalInsertIntervention = document.getElementById("modalInsertIntervention");
+
+let formInserIntervention = document.getElementById("formInserIntervention");
+
+let inputLogin = document.getElementById("inputLogin");
+let inputPassword = document.getElementById("inputPassword");
+let txtAreaObservation = document.getElementById("txtAreaObservation");
+
+let btnIntervention = document.getElementById("btnIntervention");
+let btnSaveIntervention = document.getElementById("btnSaveIntervention");
+let btnCancelIntervention = document.getElementById("btnCancelIntervention");
+let btnScaleIn = document.getElementById("btnScaleIn");
+let btnScaleOut = document.getElementById("btnScaleOut");
+
+let xCloseModal = document.getElementById("xCloseModal");
+//#endregion
+
+//#region Renders
+
+//#region Alter Title
 function alterTitleScale(scale) {
   let titleBalanca = document.getElementById("title-balanca");
 
@@ -20,45 +44,9 @@ function alterTitleScale(scale) {
     titleBalanca.innerHTML = "BALANÇA DE SAÍDA";
   }
 }
+//#endregion
 
-function loading(estado) {
-  if (estado === "inicio") {
-    body.classList.add("loading");
-  } else if (estado === "fim") {
-    body.classList.remove("loading");
-  }
-}
-
-async function getLastIntervention(scale) {
-  loading("inicio");
-
-  await $.ajax({
-    method: "GET",
-    url: `https://intervencaobalancas.herokuapp.com/api/interventions/last/${scale}`,
-    success: function (data) {
-      console.log(data);
-      segundos = data.tempLastIntervention.seconds;
-      minutos = data.tempLastIntervention.minutes;
-      horas = data.tempLastIntervention.hours;
-      dias = data.tempLastIntervention.days;
-      recordeElement.innerHTML = `Nosso recorde é: ${data.recorde}`;
-      alterTitleScale(scale);
-      console.log(scale);
-
-      loading("fim");
-    },
-    error: function (request, status, error) {
-      console.log(request.responseJSON);
-      console.log(status);
-      console.log(error);
-      loading("fim");
-    },
-  });
-}
-
-window.onload = getLastIntervention(1);
-
-/*Count Timer*/
+//#region Timer Last Interventions 
 setInterval(() => {
   segundos++;
 
@@ -101,55 +89,165 @@ setInterval(() => {
     diasElement.innerHTML = dias;
   }
 }, 1000);
-/*************/
 
-/*Modal Insert Intervention*/
+//#endregion
 
-let modal = document.getElementById("myModal");
+//#endregion
 
-let intervencaoBtn = document.getElementById("btn-intervencao");
+//#region On Load Page Scales
+window.onload = getLastIntervention(1);
+//#endregion
 
-let closeModal = document.getElementById("closeModal");
-
-let cancelInterventionBtn = document.getElementById("cancelIntervention");
-
-intervencaoBtn.onclick = function () {
-  modal.style.display = "block";
-};
-
-closeModal.onclick = function () {
-  if (verificaCamposVazios() == true) {
-    modal.style.display = "none";
-    limpaCampos();
-  } else {
-    console.log("algum campo preenchido");
+//#region Loadings
+function loading(estado) {
+  if (estado === "inicio") {
+    inLoading = true;
+    body.classList.add("loading");
+  } else if (estado === "fim") {
+    inLoading = false;
+    body.classList.remove("loading");
   }
-};
+}
 
-cancelInterventionBtn.onclick = function () {
-  if (verificaCamposVazios() == true) {
-    modal.style.display = "none";
-    limpaCampos();
-  } else {
-    console.log("algum campo preenchido");
+function loadingSaveIntervention(estado) {
+  if (estado === "inicio") {
+    inLoading = true;
+    btnSaveIntervention.classList.add("saveInterventionLoading");
+  } else if (estado === "fim") {
+    inLoading = false;
+    btnSaveIntervention.classList.remove("saveInterventionLoading");
   }
+}
+//#endregion
+
+//#region Ajax Conections
+
+//#region Get Last Intervention
+async function getLastIntervention(scale) {
+  loading("inicio");
+
+  await $.ajax({
+    method: "GET",
+    url: `https://intervencaobalancas.herokuapp.com/api/interventions/last/${scale}`,
+    success: function (data) {
+      // console.log(data);
+      segundos = data.tempLastIntervention.seconds;
+      minutos = data.tempLastIntervention.minutes;
+      horas = data.tempLastIntervention.hours;
+      dias = data.tempLastIntervention.days;
+      recordeElement.innerHTML = `Nosso recorde é: ${data.recorde}`;
+      alterTitleScale(scale);
+      // console.log(scale);
+
+      loading("fim");
+    },
+    error: function (request, status, error) {
+      console.log(request.responseJSON);
+      console.log(status);
+      console.log(error);
+      loading("fim");
+    },
+  });
+}
+//#endregion
+
+//#region Insert Intervention
+async function insertIntervention(login, password, scale, observation) {
+  loading("inicio");
+
+  let data = {
+    "login" : login,
+    "password" : password,
+    "scale" : scale,
+    "observation": observation
+  }
+
+  await $.ajax({
+    method: "POST",
+    url: `https://intervencaobalancas.herokuapp.com/api/interventions/create`,
+    data,
+    success: function (data) {
+      console.log(data);
+      loading("fim");
+      
+    },
+    error: function (request, status, error) {
+      console.log(request.responseJSON);
+      console.log(status);
+      console.log(error);
+      loading("fim");
+    },
+  });
+}
+//#endregion
+
+//#endregion
+
+//#region Alter Page Scale
+
+btnScaleIn.addEventListener("click", () => {
+  scaleInWindow = 1;
+  getLastIntervention(1)
+});
+
+btnScaleOut.addEventListener("click", () => {
+  scaleInWindow = 2;
+  getLastIntervention(2)
+});
+
+//#endregion
+
+//#region Modal Insert Intervention
+
+btnIntervention.onclick = function () {
+  modalInsertIntervention.style.display = "block";
 };
 
-window.onclick = function (event) {
-  if (event.target == modal) {
-    if (verificaCamposVazios() == true) {
-      modal.style.display = "none";
-      limpaCampos();
+//#region Modal Close
+
+function closeModalInsertIntervention(type) {
+  if (type == "postSave") {
+    console.log("close postSave");
+    modalInsertIntervention.style.display = "none";
+    clearFields();
+    getLastIntervention(scaleInWindow);
+  } else if (type == "noSave"){
+    console.log("close noSave");
+    modalInsertIntervention.style.display = "none";
+    clearFields();
+  }
+}
+
+xCloseModal.addEventListener("click", () => {
+  if (verifyEmptyFields() == true) {
+    closeModalInsertIntervention("noSave");
+  } else {
+    closeModalInsertIntervention("noSave");
+  }
+});
+
+btnCancelIntervention.addEventListener("click", () => {
+  if (verifyEmptyFields() == true) {
+    closeModalInsertIntervention("noSave");
+  } else {
+    closeModalInsertIntervention("noSave");
+  }
+});
+
+window.addEventListener("click", event => {
+  if (event.target == modalInsertIntervention) {
+    if (verifyEmptyFields() == true) {
+      closeModalInsertIntervention("noSave");
     } else {
-      console.log("algum campo preenchido");
+      closeModalInsertIntervention("noSave");
     }
   }
-};
+});
 
-/**************************/
+//#endregion
 
-/* Limpa campos */
-function limpaCampos() {
+//#region Clear Fields
+function clearFields() {
   const fields = document.querySelectorAll("[required]");
 
   for (field of fields) {
@@ -157,7 +255,7 @@ function limpaCampos() {
   }
 }
 
-function verificaCamposVazios() {
+function verifyEmptyFields() {
   const fields = document.querySelectorAll("[required]");
 
   for (field of fields) {
@@ -168,5 +266,38 @@ function verificaCamposVazios() {
     }
   }
 }
+//#endregion
 
-/****************/
+//#region Save Intervention
+
+formInserIntervention.addEventListener("submit", event => {
+  event.preventDefault();
+
+  let login = inputLogin.value;
+  let password = inputPassword.value;
+  let observation = txtAreaObservation.value;
+  let scale = scaleInWindow;
+
+  // console.log(`insertIntervention(${login}, ${password}, ${scale}, ${observation})`);
+  // console.log(`enviar o formulário scale: ${scaleInWindow}`);
+  
+  // insertIntervention(login, password, scale, observation);
+
+  Toastify({
+    text: "Intervenção inserido com Sucesso.",
+    duration: 3750, 
+    newWindow: true,
+    close: true,
+    gravity: "bottom", // `top` or `bottom`
+    position: 'right', // `left`, `center` or `right`
+    backgroundColor: "#73a34f",
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    onClick: function(){} // Callback after click
+  }).showToast();
+
+  closeModalInsertIntervention("noSave");
+});
+//#endregion
+
+//#endregion
+
