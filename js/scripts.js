@@ -111,18 +111,62 @@ let intervencaoBtn = document.getElementById("btn-intervencao");
 
 let closeModal = document.getElementById("closeModal");
 
+let cancelInterventionBtn = document.getElementById("cancelIntervention");
+
 intervencaoBtn.onclick = function () {
   modal.style.display = "block";
 };
 
 closeModal.onclick = function () {
-  modal.style.display = "none";
+  if (verificaCamposVazios() == true) {
+    modal.style.display = "none";
+    limpaCampos();
+  } else {
+    console.log("algum campo preenchido");
+  }
+};
+
+cancelInterventionBtn.onclick = function () {
+  if (verificaCamposVazios() == true) {
+    modal.style.display = "none";
+    limpaCampos();
+  } else {
+    console.log("algum campo preenchido");
+  }
 };
 
 window.onclick = function (event) {
   if (event.target == modal) {
-    modal.style.display = "none";
+    if (verificaCamposVazios() == true) {
+      modal.style.display = "none";
+      limpaCampos();
+    } else {
+      console.log("algum campo preenchido");
+    }
   }
 };
 
 /**************************/
+
+/* Limpa campos */
+function limpaCampos() {
+  const fields = document.querySelectorAll("[required]");
+
+  for (field of fields) {
+    field.value = "";
+  }
+}
+
+function verificaCamposVazios() {
+  const fields = document.querySelectorAll("[required]");
+
+  for (field of fields) {
+    if (field.value == "" || field.value == null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+/****************/

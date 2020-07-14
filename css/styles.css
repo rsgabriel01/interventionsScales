@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-family: "Roboto", sans-serif;
   background: #fafafa;
   color: #333;
 }
@@ -170,7 +170,11 @@ header#main-header {
   left: 0;
   height: 100%;
   width: 100%;
-  background: rgba(0, 0, 0, 0.15) url("images/loadinGif2.gif") 50% 50% no-repeat;
+  /*  */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.15);
+  color: #73a34f;
 }
 
 /* enquanto estiver carregando, o scroll da página estará desativado */
@@ -180,13 +184,15 @@ body.loading {
 
 /* a partir do momento em que o body estiver com a classe loading,  o modal aparecerá */
 body.loading .loading-modal {
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ------- */
 
 /* Modal Insert Intervention
-      /* The Modal (background) */
+
+/* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
@@ -209,7 +215,8 @@ body.loading .loading-modal {
   padding: 0;
   /* border: 5px solid #888; */
   border-radius: 10px;
-  width: 50%;
+  width: 98%;
+  max-width: 500px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.55s;
@@ -241,11 +248,18 @@ body.loading .loading-modal {
 }
 
 /* The Close Button */
+
+.modal-close {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
 .close {
   color: #333;
-  float: right;
   font-size: 28px;
   font-weight: bold;
+  padding: 0px 10px 0px 0px;
 }
 
 .close:hover,
@@ -255,8 +269,13 @@ body.loading .loading-modal {
   cursor: pointer;
 }
 
+/* 32px 20px 0px 20px */
+
 .modal-header {
-  padding: 5px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* padding: 0px 20px; */
   background-color: #fafafa;
   color: #333;
   border-top-left-radius: 8px;
@@ -268,27 +287,123 @@ body.loading .loading-modal {
   border-radius: 20px;
 }
 
-.modal-footer {
+.modal-body form {
+  /* margin: 32px auto; */
+  padding: 32px 64px;
+
   display: flex;
-  padding: 10px 16px;
-  background-color: #fafafa;
-  color: #333;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  justify-content: flex-end;
+  flex-direction: column;
 }
 
-.modal-footer button {
-  width: 90px;
+div.input {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.modal-body form input,
+.modal-footer form button,
+.modal-body form textarea {
+  /* reset appeareance */
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+
+  width: 100%;
+
+  padding: 16px 0;
+
+  border: none;
+  border-bottom: 1px solid #274657;
+
+  background-color: transparent;
+
+  outline: none;
+}
+
+.modal-body form textarea {
+  resize: none;
+  height: 100px;
+  overflow: hidden;
+}
+
+.modal-body form input ~ label,
+.modal-body form textarea ~ label {
+  position: absolute;
+  top: 16px;
+  left: 0;
+
+  /* color: rgba(255, 255, 255, 0.6); */
+
+  transition: 0.4s;
+}
+
+.modal-body form input:focus ~ label,
+.modal-body form textarea:focus ~ label,
+.modal-body form input:valid ~ label,
+.modal-body form textarea:valid ~ label {
+  transform: translateY(-24px);
+  font-size: 0.8em;
+  letter-spacing: 0.1em;
+}
+
+.input span.error {
+  display: flex;
+
+  padding: 0;
+
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.input span.error.active {
+  border: 1px solid red;
+  padding: 0.4em;
+}
+
+.modal-body form button {
+  width: 100%;
   border: 2px solid #274657;
   border-radius: 3px;
-  height: 30px;
-  margin: 0px 0px 0px 5px;
+  height: 50px;
   font-size: 16px;
   font-weight: bold;
   background: none;
   color: #333;
   cursor: pointer;
+  text-align: center;
+}
+
+.modal-body form #cancelIntervention {
+  border: 2px solid #751a20;
+  color: #751a20;
+}
+
+.modal-body form #cancelIntervention:hover {
+  background: #751a20;
+  color: #fff;
+}
+
+.modal-body form #saveIntervention {
+  border: 2px solid #73a34f;
+  color: #73a34f;
+}
+
+.modal-body form #saveIntervention:hover {
+  background: #73a34f;
+  color: #fff;
+}
+
+.modal-body form #saveIntervention.saveInterventionLoading {
+  background: #73a34f;
+  color: #fff;
+}
+
+.modal-body form #saveIntervention:hover {
+  background: #73a34f;
+  color: #fff;
+}
+
+.modal-body form button ~ button {
+  margin-top: 5px;
 }
 
 /***************************/
