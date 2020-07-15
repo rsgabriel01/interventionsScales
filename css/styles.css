@@ -41,7 +41,7 @@ header#main-header {
   align-items: end;
 }
 
-#menu .btn {
+#menu .btnMenu {
   border: 0;
   width: 100%;
   height: 100%;
@@ -53,7 +53,7 @@ header#main-header {
   cursor: pointer;
 }
 
-#menu button.btn:hover {
+#menu button.btnMenu:hover {
   background: #355f75;
 }
 
@@ -134,29 +134,30 @@ header#main-header {
   text-align: center;
 }
 
-#buttons {
+.buttons {
   width: 100%;
-  height: 40px;
+  height: 50px;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 20px;
+
+  border-radius: 3px;
+
+  cursor: pointer;
 }
 
-#buttons button {
+#buttonsPageScales button {
   border: 2px solid #274657;
-  border-radius: 3px;
-  width: 100%;
-  height: 50px;
+
   margin: 0 40px;
   font-size: 16px;
   font-weight: bold;
   background: none;
-  color: #333;
-  cursor: pointer;
+  color: #274657;
 }
 
-#buttons button:hover {
+#buttonsPageScales button:hover {
   background: #274657;
   color: #fff;
 }
@@ -383,10 +384,11 @@ div.input {
 
 .modalBody form #btnSaveIntervention {
   border: 2px solid #73a34f;
+  /* border: 2px solid #babd25; */
   color: #73a34f;
 }
 
-.modalBody form #btnSaveIntervention i{
+.modalBody form #btnSaveIntervention i {
   display: none;
 }
 
@@ -397,7 +399,7 @@ div.input {
 
 .modalBody form #btnSaveIntervention.saveInterventionLoading {
   background: #73a34f;
-  
+
   color: #fff;
 }
 
@@ -405,13 +407,63 @@ div.input {
   display: inline-block;
 }
 
-/* .modalBody form #saveIntervention:hover {
-  background: #73a34f;
-  color: #fff;
-} */
-
 .modalBody form button ~ button {
   margin-top: 5px;
 }
 
 /***************************/
+
+/* Modal Questions Yes or No*/
+
+.modalBody #questionTextBody {
+  padding: 32px 0px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.modalFooter {
+  padding: 2px 16px 16px 16px;
+  border-radius: 20px;
+}
+
+.modalFooter #questionButtons {
+  /* padding: 0px 0px 0px 16px; */
+  /* width: 50px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.modalFooter #questionButtons button {
+  margin: 0px 2px;
+
+  width: 100px;
+  height: 34px;
+
+  background: none;
+
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.modalFooter #questionButtons #btnQuestionNo {
+  border: 2px solid #751a20;
+  color: #751a20;
+}
+
+.modalFooter #questionButtons #btnQuestionYes {
+  border: 2px solid #73a34f;
+  color: #73a34f;
+}
+
+.modalFooter #questionButtons #btnQuestionNo:hover {
+  background-color: #751a20;
+  color: #fff;
+}
+
+.modalFooter #questionButtons #btnQuestionYes:hover {
+  background-color: #73a34f;
+  color: #fff;
+}
+/******************/

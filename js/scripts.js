@@ -1,6 +1,6 @@
-//#region Definition
+//#region Definitions
 let inLoading = false;
-let scaleInWindow = 1
+let scaleInWindow = 1;
 
 let segundos;
 let minutos;
@@ -15,9 +15,14 @@ let recordeElement = document.getElementById("recorde");
 
 let body = document.querySelector("body");
 
-let modalInsertIntervention = document.getElementById("modalInsertIntervention");
+let modalInsertIntervention = document.getElementById(
+  "modalInsertIntervention"
+);
+let modalQuestionYesNo = document.getElementById("modalQuestionYesNo");
 
 let formInserIntervention = document.getElementById("formInserIntervention");
+
+let textQuestionYesNo = document.getElementById("textQuestionYesNo");
 
 let inputLogin = document.getElementById("inputLogin");
 let inputPassword = document.getElementById("inputPassword");
@@ -28,8 +33,16 @@ let btnSaveIntervention = document.getElementById("btnSaveIntervention");
 let btnCancelIntervention = document.getElementById("btnCancelIntervention");
 let btnScaleIn = document.getElementById("btnScaleIn");
 let btnScaleOut = document.getElementById("btnScaleOut");
+let btnQuestionNo = document.getElementById("btnQuestionNo");
+let btnQuestionYes = document.getElementById("btnQuestionYes");
 
-let xCloseModal = document.getElementById("xCloseModal");
+let xCloseModalInsertIntervention = document.getElementById(
+  "xCloseModalInsertIntervention"
+);
+let xCloseModalQuestionYesNo = document.getElementById(
+  "xCloseModalQuestionYesNo"
+);
+
 //#endregion
 
 //#region Renders
@@ -46,7 +59,7 @@ function alterTitleScale(scale) {
 }
 //#endregion
 
-//#region Timer Last Interventions 
+//#region Timer Last Interventions
 setInterval(() => {
   segundos++;
 
@@ -94,8 +107,12 @@ setInterval(() => {
 
 //#endregion
 
-//#region On Load Page Scales
+//#region Load timer Scales
 window.onload = getLastIntervention(1);
+
+setInterval(() => {
+  getLastIntervention(scaleInWindow);
+}, 600000);
 //#endregion
 
 //#region Loadings
@@ -156,25 +173,32 @@ async function insertIntervention(login, password, scale, observation) {
   loading("inicio");
 
   let data = {
-    "login" : login,
-    "password" : password,
-    "scale" : scale,
-    "observation": observation
-  }
+    login: login,
+    password: password,
+    scale: scale,
+    observation: observation,
+  };
 
   await $.ajax({
     method: "POST",
     url: `https://intervencaobalancas.herokuapp.com/api/interventions/create`,
     data,
     success: function (data) {
-      console.log(data);
+      // console.log(data);
       loading("fim");
-      
+      sucessNotification("Intervenção informada com sucesso.");
+      closeModalInsertIntervention("postSave");
     },
     error: function (request, status, error) {
-      console.log(request.responseJSON);
-      console.log(status);
-      console.log(error);
+      if ("attention" in request.responseJSON) {
+        warningNotification(request.responseJSON.attention);
+      } else {
+        errorNotification(`
+        Request Error - 
+        Status Code: ${request.status};
+        StatusText: ${request.statusText};
+        Response Text: ${request.responseText};`);
+      }
       loading("fim");
     },
   });
@@ -187,12 +211,12 @@ async function insertIntervention(login, password, scale, observation) {
 
 btnScaleIn.addEventListener("click", () => {
   scaleInWindow = 1;
-  getLastIntervention(1)
+  getLastIntervention(1);
 });
 
 btnScaleOut.addEventListener("click", () => {
   scaleInWindow = 2;
-  getLastIntervention(2)
+  getLastIntervention(2);
 });
 
 //#endregion
@@ -203,22 +227,20 @@ btnIntervention.onclick = function () {
   modalInsertIntervention.style.display = "block";
 };
 
-//#region Modal Close
-
 function closeModalInsertIntervention(type) {
   if (type == "postSave") {
-    console.log("close postSave");
+    // console.log("close postSave");
     modalInsertIntervention.style.display = "none";
     clearFields();
     getLastIntervention(scaleInWindow);
-  } else if (type == "noSave"){
-    console.log("close noSave");
+  } else if (type == "noSave") {
+    // console.log("close noSave");
     modalInsertIntervention.style.display = "none";
     clearFields();
   }
 }
 
-xCloseModal.addEventListener("click", () => {
+xCloseModalInsertIntervention.addEventListener("click", () => {
   if (verifyEmptyFields() == true) {
     closeModalInsertIntervention("noSave");
   } else {
@@ -228,21 +250,56 @@ xCloseModal.addEventListener("click", () => {
 
 btnCancelIntervention.addEventListener("click", () => {
   if (verifyEmptyFields() == true) {
-    closeModalInsertIntervention("noSave");
+    openModalQuestionYesNo("Tem certeza que deseja salvar essa Intervenção?");
   } else {
     closeModalInsertIntervention("noSave");
   }
 });
 
-window.addEventListener("click", event => {
+window.addEventListener("click", (event) => {
   if (event.target == modalInsertIntervention) {
     if (verifyEmptyFields() == true) {
       closeModalInsertIntervention("noSave");
     } else {
-      closeModalInsertIntervention("noSave");
+      if (
+        openModalQuestionYesNo(
+          "Tem certeza que deseja salvar essa Intervenção?"
+        ) == true
+      ) {
+        console.log(true);
+      } else {
+        console.log(false);
+      }
     }
   }
 });
+
+//#region Modal Insert Intervention
+
+//#region Modal Question Yes or Nor
+
+function openModalQuestionYesNo(textQuestion) {
+  modalQuestionYesNo.style.display = "block";
+  textQuestionYesNo.innerText = textQuestion;
+}
+
+function closeModalQuestionYesNo() {
+  modalQuestionYesNo.style.display = "none";
+}
+
+xCloseModalQuestionYesNo.onclick = () => {
+  closeModalQuestionYesNo();
+};
+
+btnQuestionNo.onclick = () => {
+  // closeModalQuestionYesNo();
+  return;
+};
+
+btnQuestionYes.onclick = () => {
+  // closeModalQuestionYesNo();
+  booleanButton = true;
+};
 
 //#endregion
 
@@ -270,7 +327,7 @@ function verifyEmptyFields() {
 
 //#region Save Intervention
 
-formInserIntervention.addEventListener("submit", event => {
+formInserIntervention.addEventListener("submit", (event) => {
   event.preventDefault();
 
   let login = inputLogin.value;
@@ -278,26 +335,66 @@ formInserIntervention.addEventListener("submit", event => {
   let observation = txtAreaObservation.value;
   let scale = scaleInWindow;
 
-  // console.log(`insertIntervention(${login}, ${password}, ${scale}, ${observation})`);
-  // console.log(`enviar o formulário scale: ${scaleInWindow}`);
-  
+  openModalQuestionYesNo("Tem certeza que deseja salvar essa Intervenção?");
+
   // insertIntervention(login, password, scale, observation);
-
-  Toastify({
-    text: "Intervenção inserido com Sucesso.",
-    duration: 3750, 
-    newWindow: true,
-    close: true,
-    gravity: "bottom", // `top` or `bottom`
-    position: 'right', // `left`, `center` or `right`
-    backgroundColor: "#73a34f",
-    stopOnFocus: true, // Prevents dismissing of toast on hover
-    onClick: function(){} // Callback after click
-  }).showToast();
-
-  closeModalInsertIntervention("noSave");
 });
 //#endregion
 
 //#endregion
 
+//#region Notifications
+
+function sucessNotification(text) {
+  Toastify({
+    text: `
+    <i class="fas fa-check-circle fa-lg"></i>
+    ${text}
+    `,
+    duration: 5000,
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    backgroundColor: "#73a34f",
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    onClick: function () {}, // Callback after click
+  }).showToast();
+}
+
+function warningNotification(text) {
+  Toastify({
+    text: `
+    <i class="fas fa-exclamation-circle fa-lg"></i>
+    ${text}
+    `,
+    duration: 0,
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    backgroundColor: "#babd25", //#babd25 #d5d821
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    onClick: function () {}, // Callback after click
+  }).showToast();
+}
+
+function errorNotification(text) {
+  Toastify({
+    text: `
+    <i class="fas fa-exclamation-triangle fa-lg"></i>
+    Ops, algo deu errado.
+    ${text}
+    `,
+    duration: 0,
+    newWindow: true,
+    close: true,
+    gravity: "top", // `top` or `bottom`
+    position: "right", // `left`, `center` or `right`
+    backgroundColor: "#751a20",
+    stopOnFocus: true, // Prevents dismissing of toast on hover
+    onClick: function () {}, // Callback after click
+  }).showToast();
+}
+
+//#endregion

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contador Balanças</title>
-    
+
     <link
       rel="icon"
       type="image/svg"
@@ -15,14 +15,20 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/styles.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script
       src="https://kit.fontawesome.com/9302f1fcc6.js"
       crossorigin="anonymous"
     ></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
   </head>
   <body>
     <header id="main-header">
@@ -30,17 +36,11 @@
         Intervenções nas Balanças
       </div>
       <div id="menu">
-        <button
-          class="btn"
-          id="btnScaleIn"
-        >
+        <button class="btnMenu" id="btnScaleIn">
           <i class="fas fa-truck-moving"></i>
           Entrada
         </button>
-        <button
-          class="btn"
-          id="btnScaleOut"
-        >
+        <button class="btnMenu" id="btnScaleOut">
           <i class="fas fa-truck-moving fa-flip-horizontal"></i>
           Saida
         </button>
@@ -81,9 +81,9 @@
         <div id="recorde">
           Nosso recorde é: 00D - 00h:00m:00s
         </div>
-        <div id="buttons">
-          <button id="btnIntervention">
-            <i class="fas fa-tools"></i>
+        <div id="buttonsPageScales">
+          <button class="buttons" id="btnIntervention">
+            <i class="fas fa-tools">&nbsp</i>
             Intervenção
           </button>
         </div>
@@ -94,12 +94,12 @@
       <!-- Modal content -->
       <div class="modalContent">
         <div class="modalClose">
-          <span class="close" id="xCloseModal">&times;</span>
+          <span class="close" id="xCloseModalInsertIntervention">&times;</span>
         </div>
         <div class="modalHeader">
           <h2>
             <i class="fas fa-tools"></i>
-            INSERIR INTERVENÇÃO
+            INFORMAR INTERVENÇÃO
           </h2>
         </div>
         <div class="modalBody">
@@ -117,17 +117,54 @@
             </div>
 
             <div class="input">
-              <textarea maxlength="230" id="txtAreaObservation" required></textarea>
+              <textarea
+                maxlength="230"
+                id="txtAreaObservation"
+                required
+              ></textarea>
               <label>Observação</label>
               <span class="error"></span>
             </div>
 
             <button type="submit" id="btnSaveIntervention" class="">
-              <i class="fas fa-spinner fa-pulse" ></i>
+              <i class="fas fa-spinner fa-pulse"></i>
               Salvar
             </button>
             <button type="button" id="btnCancelIntervention">Cancelar</button>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <div id="modalQuestionYesNo" class="modal">
+      <div class="modalContent">
+        <div class="modalClose">
+          <span class="close" id="xCloseModalQuestionYesNo">&times;</span>
+        </div>
+        <div class="modalHeader">
+          <h2 id="questionTextBody">
+            <i class="fas fa-question-circle"></i>
+            ATENÇÃO
+          </h2>
+        </div>
+
+        <div class="modalBody">
+          <div id="questionTextBody">
+            <h3 id="textQuestionYesNo">
+              Questions message?
+            </h3>
+          </div>
+        </div>
+
+        <div class="modalFooter">
+          <div id="questionButtons">
+            <button type="button" id="btnQuestionNo" class="buttons">
+              Não
+            </button>
+            <button type="button" id="btnQuestionYes" class="buttons">
+              Sim
+            </button>
+          </div>
         </div>
       </div>
     </div>
