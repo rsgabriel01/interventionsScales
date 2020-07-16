@@ -118,13 +118,25 @@
         <div class="modalBody">
           <form id="formInserIntervention" action="">
             <div class="input">
-              <input type="text" id="inputLogin" required />
+              <input
+                type="text"
+                id="inputLogin"
+                autocapitalize="none"
+                autocorrect="off"
+                required
+              />
               <label>Usuário</label>
               <span class="error"></span>
             </div>
 
             <div class="input">
-              <input type="password" id="inputPassword" required />
+              <input
+                type="password"
+                id="inputPassword"
+                autocapitalize="none"
+                autocorrect="off"
+                required
+              />
               <label>Senha</label>
               <span class="error"></span>
             </div>
@@ -133,6 +145,7 @@
               <textarea
                 maxlength="230"
                 id="txtAreaObservation"
+                autocapitalize="sentences"
                 required
               ></textarea>
               <label>Observação</label>
