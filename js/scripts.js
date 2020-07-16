@@ -244,64 +244,43 @@ xCloseModalInsertIntervention.addEventListener("click", () => {
   if (verifyEmptyFields() == true) {
     closeModalInsertIntervention("noSave");
   } else {
-    closeModalInsertIntervention("noSave");
+    modalQuestionYesNo.style.display = "block";
+
+    textQuestionYesNo.innerText =
+      "Voce tem certeza que deseja cancelar essa operação?";
+
+    btnQuestionNo.onclick = () => {
+      closeModalQuestionYesNo();
+    };
+
+    btnQuestionYes.onclick = () => {
+      closeModalQuestionYesNo();
+      closeModalInsertIntervention("noSave");
+    };
   }
 });
 
 btnCancelIntervention.addEventListener("click", () => {
   if (verifyEmptyFields() == true) {
-    openModalQuestionYesNo("Tem certeza que deseja salvar essa Intervenção?");
-  } else {
     closeModalInsertIntervention("noSave");
-  }
-});
+  } else {
+    // console.log("else");
 
-window.addEventListener("click", (event) => {
-  if (event.target == modalInsertIntervention) {
-    if (verifyEmptyFields() == true) {
+    modalQuestionYesNo.style.display = "block";
+
+    textQuestionYesNo.innerText =
+      "Voce tem certeza que deseja cancelar essa operação?";
+
+    btnQuestionNo.onclick = () => {
+      closeModalQuestionYesNo();
+    };
+
+    btnQuestionYes.onclick = () => {
+      closeModalQuestionYesNo();
       closeModalInsertIntervention("noSave");
-    } else {
-      if (
-        openModalQuestionYesNo(
-          "Tem certeza que deseja salvar essa Intervenção?"
-        ) == true
-      ) {
-        console.log(true);
-      } else {
-        console.log(false);
-      }
-    }
+    };
   }
 });
-
-//#region Modal Insert Intervention
-
-//#region Modal Question Yes or Nor
-
-function openModalQuestionYesNo(textQuestion) {
-  modalQuestionYesNo.style.display = "block";
-  textQuestionYesNo.innerText = textQuestion;
-}
-
-function closeModalQuestionYesNo() {
-  modalQuestionYesNo.style.display = "none";
-}
-
-xCloseModalQuestionYesNo.onclick = () => {
-  closeModalQuestionYesNo();
-};
-
-btnQuestionNo.onclick = () => {
-  // closeModalQuestionYesNo();
-  return;
-};
-
-btnQuestionYes.onclick = () => {
-  // closeModalQuestionYesNo();
-  booleanButton = true;
-};
-
-//#endregion
 
 //#region Clear Fields
 function clearFields() {
@@ -335,11 +314,36 @@ formInserIntervention.addEventListener("submit", (event) => {
   let observation = txtAreaObservation.value;
   let scale = scaleInWindow;
 
-  openModalQuestionYesNo("Tem certeza que deseja salvar essa Intervenção?");
+  modalQuestionYesNo.style.display = "block";
 
-  // insertIntervention(login, password, scale, observation);
+  textQuestionYesNo.innerText =
+    "Voce tem certeza que deseja SALVAR essa operação?";
+
+  btnQuestionNo.onclick = () => {
+    closeModalQuestionYesNo();
+  };
+
+  btnQuestionYes.onclick = async () => {
+    closeModalQuestionYesNo();
+    await insertIntervention(login, password, scale, observation);
+    closeModalInsertIntervention("postSave");
+  };
+
+  //
 });
 //#endregion
+
+//#endregion
+
+//#region Modal Question Yes or Nor
+
+function closeModalQuestionYesNo() {
+  modalQuestionYesNo.style.display = "none";
+}
+
+xCloseModalQuestionYesNo.onclick = () => {
+  closeModalQuestionYesNo();
+};
 
 //#endregion
 
@@ -351,7 +355,7 @@ function sucessNotification(text) {
     <i class="fas fa-check-circle fa-lg"></i>
     ${text}
     `,
-    duration: 5000,
+    duration: 4000,
     newWindow: true,
     close: true,
     gravity: "top", // `top` or `bottom`
