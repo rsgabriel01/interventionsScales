@@ -372,7 +372,7 @@ function warningNotification(text) {
     <i class="fas fa-exclamation-circle fa-lg"></i>
     ${text}
     `,
-    duration: 0,
+    duration: 5500,
     newWindow: true,
     close: true,
     gravity: "top", // `top` or `bottom`
