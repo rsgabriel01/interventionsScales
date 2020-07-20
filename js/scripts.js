@@ -22,6 +22,10 @@ let modalQuestionYesNo = document.getElementById("modalQuestionYesNo");
 
 let formInserIntervention = document.getElementById("formInserIntervention");
 
+const fields = document.querySelectorAll("[required]");
+
+const spansError = document.querySelectorAll("span.error");
+
 let textQuestionYesNo = document.getElementById("textQuestionYesNo");
 
 let inputLogin = document.getElementById("inputLogin");
@@ -170,6 +174,10 @@ async function getLastIntervention(scale) {
 
 //#region Insert Intervention
 async function insertIntervention(login, password, scale, observation) {
+  inputLogin.style = "";
+  inputPassword.style = "";
+  txtAreaObservation.style = "";
+
   loading("inicio");
 
   let data = {
@@ -190,8 +198,22 @@ async function insertIntervention(login, password, scale, observation) {
       closeModalInsertIntervention("postSave");
     },
     error: function (request, status, error) {
-      if ("attention" in request.responseJSON) {
-        warningNotification(request.responseJSON.attention);
+      const attentionMessage = request.responseJSON.attention;
+
+      if (attentionMessage) {
+        if (
+          attentionMessage ==
+          "A senha digitada está incorreta. Tente novamente."
+        ) {
+          inputPassword.style = "border-bottom: 1px solid red";
+          warningNotification(attentionMessage);
+        } else if (
+          attentionMessage ==
+          "O usuário informado não existe. Por favor verifique."
+        ) {
+          inputLogin.style = "border-bottom: 1px solid red";
+          warningNotification(attentionMessage);
+        }
       } else {
         errorNotification(`
         Request Error - 
@@ -225,6 +247,7 @@ btnScaleOut.addEventListener("click", () => {
 
 btnIntervention.onclick = function () {
   modalInsertIntervention.style.display = "block";
+  inactiveSpanError(spansError, fields);
 };
 
 function closeModalInsertIntervention(type) {
@@ -284,16 +307,12 @@ btnCancelIntervention.addEventListener("click", () => {
 
 //#region Clear Fields
 function clearFields() {
-  const fields = document.querySelectorAll("[required]");
-
   for (field of fields) {
     field.value = "";
   }
 }
 
 function verifyEmptyFields() {
-  const fields = document.querySelectorAll("[required]");
-
   for (field of fields) {
     if (field.value == "" || field.value == null) {
       return true;
@@ -372,7 +391,7 @@ function warningNotification(text) {
     <i class="fas fa-exclamation-circle fa-lg"></i>
     ${text}
     `,
-    duration: 5500,
+    duration: 4000,
     newWindow: true,
     close: true,
     gravity: "top", // `top` or `bottom`
@@ -401,4 +420,106 @@ function errorNotification(text) {
   }).showToast();
 }
 
+//#endregion
+
+//#region Custom Error Messages
+function ValidateField(field) {
+  // logica para verificar se existem erros
+  function verifyErrors() {
+    let foundError = false;
+
+    for (let error in field.validity) {
+      // se não for customError
+      // então verifica se tem erro
+      if (field.validity[error] && !field.validity.valid) {
+        // console.log(field.validity);
+
+        foundError = error;
+      }
+    }
+    return foundError;
+  }
+
+  function customMessage(typeError) {
+    // console.log(typeError);
+    const messages = {
+      text: {
+        valueMissing: "Por favor, preencha este campo.",
+      },
+      password: {
+        valueMissing: "Por favor, preencha este campo.",
+        tooShort:
+          "Este campo precisa ter no minimo 8 e no máximo 16 caracateres.",
+        tooLong: "Este campo pode ter no máximo 16 caracateres.",
+      },
+      textarea: {
+        valueMissing: "Por favor, preencha este campo.",
+        tooLong: "Este campo pode ter no máximo 230 caracateres.",
+      },
+    };
+
+    return messages[field.type][typeError];
+  }
+
+  function setCustomMessage(message) {
+    const spanError = field.parentNode.querySelector("span.error");
+
+    if (message) {
+      spanError.classList.add("active");
+      spanError.innerHTML = message;
+      field.style = "border-bottom: 1px solid red";
+    } else {
+      spanError.classList.remove("active");
+      spanError.innerHTML = "";
+      field.style = "";
+    }
+  }
+
+  return function () {
+    const error = verifyErrors();
+
+    if (error) {
+      const message = customMessage(error);
+      console.log(error);
+
+      if (error == "valueMissing") {
+        field.classList.remove("error");
+      } else {
+        field.classList.add("error");
+      }
+      setCustomMessage(message);
+    } else {
+      field.classList.remove("error");
+      setCustomMessage();
+    }
+  };
+}
+
+function customValidation(event) {
+  const field = event.target;
+  const validation = ValidateField(field);
+
+  validation();
+}
+
+for (field of fields) {
+  field.addEventListener("invalid", (event) => {
+    // eliminar o bubble
+    event.preventDefault();
+
+    customValidation(event);
+  });
+  field.addEventListener("blur", customValidation);
+}
+
+function inactiveSpanError(spans, fields) {
+  for (const spanError of spans) {
+    spanError.classList.remove("active");
+    spanError.innerHTML = "";
+    console.log(spanError);
+  }
+  for (const fieldError of fields) {
+    fieldError.style = "";
+  }
+}
 //#endregion

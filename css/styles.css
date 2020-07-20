@@ -340,7 +340,9 @@ div.input {
 .modalBody form input:focus ~ label,
 .modalBody form textarea:focus ~ label,
 .modalBody form input:valid ~ label,
-.modalBody form textarea:valid ~ label {
+.modalBody form textarea:valid ~ label,
+.modalBody form input.error ~ label,
+.modalBody form textarea.error ~ label {
   transform: translateY(-24px);
   font-size: 0.8em;
   letter-spacing: 0.1em;
@@ -355,8 +357,12 @@ div.input {
 }
 
 .input span.error.active {
-  border: 1px solid red;
+  /* border: 1px solid red; */
   padding: 0.4em;
+  color: red;
+  font-size: 12px;
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
 }
 
 .modalBody form button {
@@ -384,8 +390,8 @@ div.input {
 
 .modalBody form #btnSaveIntervention {
   border: 2px solid #73a34f;
-  /* border: 2px solid #babd25; */
-  color: #73a34f;
+  background: #73a34f;
+  color: #fff;
 }
 
 .modalBody form #btnSaveIntervention i {
@@ -393,18 +399,9 @@ div.input {
 }
 
 .modalBody form #btnSaveIntervention:hover {
-  background: #73a34f;
-  color: #fff;
-}
-
-.modalBody form #btnSaveIntervention.saveInterventionLoading {
-  background: #73a34f;
-
-  color: #fff;
-}
-
-.modalBody form #btnSaveIntervention.saveInterventionLoading i {
-  display: inline-block;
+  border: 2px solid #4d7231;
+  background: #4d7231;
+  /* color: #fff; */
 }
 
 .modalBody form button ~ button {
@@ -454,7 +451,8 @@ div.input {
 
 .modalFooter #questionButtons #btnQuestionYes {
   border: 2px solid #73a34f;
-  color: #73a34f;
+  background: #73a34f;
+  color: #fff;
 }
 
 .modalFooter #questionButtons #btnQuestionNo:hover {
@@ -463,7 +461,7 @@ div.input {
 }
 
 .modalFooter #questionButtons #btnQuestionYes:hover {
-  background-color: #73a34f;
-  color: #fff;
+  border: 2px solid #4d7231;
+  background: #4d7231;
 }
 /******************/
