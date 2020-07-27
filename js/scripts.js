@@ -270,7 +270,7 @@ xCloseModalInsertIntervention.addEventListener("click", () => {
     modalQuestionYesNo.style.display = "block";
 
     textQuestionYesNo.innerText =
-      "Voce tem certeza que deseja cancelar essa operação?";
+      "Voce tem certeza que deseja CANCELAR essa operação?";
 
     btnQuestionNo.onclick = () => {
       closeModalQuestionYesNo();
@@ -292,7 +292,7 @@ btnCancelIntervention.addEventListener("click", () => {
     modalQuestionYesNo.style.display = "block";
 
     textQuestionYesNo.innerText =
-      "Voce tem certeza que deseja cancelar essa operação?";
+      "Voce tem certeza que deseja CANCELAR essa operação?";
 
     btnQuestionNo.onclick = () => {
       closeModalQuestionYesNo();
